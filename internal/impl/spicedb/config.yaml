@@ -1,0 +1,42 @@
+logger:
+  level: DEBUG
+input:
+  generate:
+    mapping: |
+      root = {
+        "resourceType": "document",
+        "resourceId": fake("uuid_hyphenated"),
+        "relation": "owner",
+        "userId": fake("uuid_hyphenated")
+      }
+    interval: 1s
+    batch_size: 10
+output:
+  spicedb:
+    endpoint: localhost:50051
+    token: secretkey
+    write_schema: |
+      definition user {}
+
+      definition document {
+        relation owner: user
+
+        permission view = owner
+      }
+    batching:
+      count: 100
+      period: 5s
+    args_mapping: |
+      root = {
+        "resource": {
+          "object_type": this.resourceType,
+          "object_id": this.resourceId
+        },
+        "relation": this.relation,
+        "subject": {
+          "object": {
+            "object_type": "user",
+            "object_id": this.userId
+          }		
+        }
+      }

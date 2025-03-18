@@ -1,0 +1,7 @@
+definition user {}
+
+definition document {
+  relation owner: user
+
+  permission view = owner
+}

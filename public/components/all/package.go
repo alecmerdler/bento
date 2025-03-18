@@ -50,6 +50,7 @@ import (
 	_ "github.com/warpstreamlabs/bento/public/components/sentry"
 	_ "github.com/warpstreamlabs/bento/public/components/sftp"
 	_ "github.com/warpstreamlabs/bento/public/components/snowflake"
+	_ "github.com/warpstreamlabs/bento/public/components/spicedb"
 	_ "github.com/warpstreamlabs/bento/public/components/splunk"
 	_ "github.com/warpstreamlabs/bento/public/components/sql"
 	_ "github.com/warpstreamlabs/bento/public/components/statsd"
