@@ -1,0 +1,47 @@
+logger:
+  level: DEBUG
+input:
+  generate:
+    mapping: |
+      root = {
+        "resourceType": "document",
+        "resourceId": "constitution",
+        "permission": "view",
+        "userId": "alec"
+      }
+    interval: 500ms
+    batch_size: 1
+
+pipeline:
+  processors:
+    - label: authz
+      spicedb_check:
+        endpoint: localhost:50051
+        token: mysecretkey
+        write_schema: |
+          definition user {}
+
+          definition document {
+            relation owner: user
+
+            permission view = owner
+          }
+        resource_type: '${! json("resourceType") }'
+        resource_id: '${! json("resourceId") }'
+        permission: '${! json("permission") }'
+        subject_type: user
+        subject_id: '${! json("userId") }'
+        full_consistency: true
+
+output:
+  switch:
+    strict_mode: true
+    cases:
+      - check: this == "GRANTED"
+        output:
+          stdout: {}
+      - check: this == "DENIED"
+        output:
+          stdout: {}
+      - output:
+          stdout: {}

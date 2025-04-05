@@ -119,6 +119,9 @@ spicedb:
 
 	require.NoError(t, inFn(context.Background(), batch))
 	require.NoError(t, stream.StopWithin(gracefulShutdown))
+
+	// FIXME(alecmerdler): Playing around with tests...
+	time.Sleep(5 * time.Second)
 }
 
 type inputMessage struct {
